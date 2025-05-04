@@ -1,0 +1,13 @@
+from app import create_app, db
+from sqlalchemy import inspect
+
+
+app = create_app()
+
+with app.app_context():
+    inspector = inspect(db.engine)
+    tables = inspector.get_table_names()
+    print("Tablas",tables)
+
+if __name__ == '__main__':
+    app.run(debug=True)
