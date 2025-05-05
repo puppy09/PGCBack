@@ -20,6 +20,7 @@ def create_app():
     app.config['MAIL_USERNAME']='sweeneyoficial@gmail.com'
     app.config['MAIL_PASSWORD']='cehf yvsq tfsy nsmg'
     app.config['MAIL_DEFAULT_SENDER']='sweeneyoficial@gmail.com'
+    app.config['SECRET_KEY']='secreto0009'
 
     mail.init_app(app)
     db.init_app(app)

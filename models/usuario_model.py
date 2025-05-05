@@ -3,7 +3,7 @@ from app import db
 class Usuarios(db.Model):
     __tablename__ = 'tb_usuarios'
 
-    id=db.Column(db.Integer, primary_key=True)
+    id_usuario=db.Column(db.Integer, primary_key=True)
     nombre=db.Column(db.String(50),nullable=False)
     ap_paterno=db.Column(db.String(50),nullable=False)
     ap_materno=db.Column(db.String(50),nullable=False)

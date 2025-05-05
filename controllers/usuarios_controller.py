@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify, Blueprint
+from flask import Flask, request, jsonify, Blueprint, current_app
 from flask_mail import Message
 from app import db
 from app import mail
 from models.usuario_model import Usuarios
 import random, string
+from werkzeug.security import generate_password_hash, check_password_hash
+import jwt
 
 
 usuariosBP = Blueprint('usuarios',__name__)
@@ -27,7 +29,8 @@ def registrar_usuario():
         #    return jsonify({'error':'El correo ya esta registrado'}),400
         
         contra = generar_contraseña()
-        new_usuario = Usuarios(nombre=nombre, ap_paterno=ap_paterno, ap_materno=ap_materno,email=email,contra=contra)
+        contraHashed=generate_password_hash(contra)
+        new_usuario = Usuarios(nombre=nombre, ap_paterno=ap_paterno, ap_materno=ap_materno,email=email,contra=contraHashed)
         db.session.add(new_usuario)
         db.session.commit()
 
@@ -37,5 +40,26 @@ def registrar_usuario():
         msg.body=f'Bienvenido {nombre}, se ha generado una contraseña para que entres por primera vez al sistema. {contra}. Podras cambiarla una vez ingreses'
         mail.send(msg)
         return jsonify({'message':'Usuario registrado con exito'}), 200
+    except Exception as e:
+        return jsonify({'error':str(e)}),500
+    
+@usuariosBP.route('/',methods=['POST'])
+def login():
+    try:
+        data=request.get_json()
+        email = data.get('email')
+        contra=data.get('contra')
+
+        usuario = Usuarios.query.filter_by(email=email).first()
+
+        if not usuario or not check_password_hash(usuario.contra, contra):
+            return jsonify({'Error':'Credenciales invalidas'}),401
+        
+        token = jwt.encode({
+            'id_usuario': usuario.id_usuario,
+        },current_app.config['SECRET_KEY'], algorithm='HS256')
+
+        return jsonify({'token':token})
+
     except Exception as e:
         return jsonify({'error':str(e)}),500
