@@ -6,7 +6,7 @@ from models.usuario_model import Usuarios
 import random, string
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-
+from middlewares.menu import token_requerido
 
 usuariosBP = Blueprint('usuarios',__name__)
 
@@ -63,3 +63,19 @@ def login():
 
     except Exception as e:
         return jsonify({'error':str(e)}),500
+
+@usuariosBP.route('/perfil',methods=['GET'])
+@token_requerido
+def obtener_perfil(request):
+    id_usuario=request.id_usuario
+    usuario=Usuarios.query.get(id_usuario)
+
+    if not usuario:
+        return jsonify({'error':'Usuario no encontrado'}),404
+    
+    return jsonify({
+        'id':usuario.id_usuario,
+        'nombre':usuario.nombre,
+        'email':usuario.email
+    })
+
