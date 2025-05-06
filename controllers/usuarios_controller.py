@@ -25,8 +25,8 @@ def registrar_usuario():
         ap_materno=data['ap_materno']
         
 
-        #if Usuarios.query.filter_by(email=email).first():
-        #    return jsonify({'error':'El correo ya esta registrado'}),400
+        if Usuarios.query.filter_by(email=email).first():
+            return jsonify({'error':'El correo ya esta registrado'}),400
         
         contra = generar_contraseña()
         contraHashed=generate_password_hash(contra)
@@ -66,17 +66,17 @@ def login():
 
 @usuariosBP.route('/perfil',methods=['GET'])
 @token_requerido
-def obtener_perfil(request):
-    id_usuario=request.id_usuario
-    usuario=Usuarios.query.get(id_usuario)
+def obtener_perfil(usuario):
+    id_usuario=usuario.id_usuario
+    usuariofind=Usuarios.query.get(id_usuario)
 
-    if not usuario:
+    if not usuariofind:
         return jsonify({'error':'Usuario no encontrado'}),404
     
     return jsonify({
-        'id':usuario.id_usuario,
-        'nombre':usuario.nombre,
-        'email':usuario.email
+        'id':usuariofind.id_usuario,
+        'nombre':usuariofind.nombre,
+        'email':usuariofind.email
     })
 
 @usuariosBP.route('/cambiar_contra',methods=['PUT'])

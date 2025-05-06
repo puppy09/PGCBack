@@ -27,9 +27,11 @@ def create_app():
 
     from .routes import main as main_blueprint
     from controllers.usuarios_controller import usuariosBP
+    from controllers.medidas_controller import medidasBP
 
     app.register_blueprint(main_blueprint)
     app.register_blueprint(usuariosBP)
+    app.register_blueprint(medidasBP)
    # app.register_blueprint(main_blueprint)
     return app
 
