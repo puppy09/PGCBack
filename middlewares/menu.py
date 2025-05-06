@@ -11,7 +11,7 @@ from functools import wraps
 def token_requerido(f):
     @wraps(f)
     def decorador(*args, **kwargs):
-        token: None
+        token = None
         if 'Authorization' in request.headers:
             token = request.headers['Authorization'].split()[1]
 

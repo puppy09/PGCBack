@@ -79,3 +79,29 @@ def obtener_perfil(request):
         'email':usuario.email
     })
 
+@usuariosBP.route('/cambiar_contra',methods=['PUT'])
+@token_requerido
+def cambiar_contra(usuario):
+    try:
+
+        data = request.get_json()
+        contra=data.get('contra')
+        nueva_contra=data.get('nueva_contra')
+        conf_nueva_con=data.get('conf_nueva_con')
+
+        if not usuario or not check_password_hash(usuario.contra, contra):
+            return jsonify({'error':'Usuario no encontrado o contraseña incorrecta'}),404
+    
+        if nueva_contra != conf_nueva_con:
+            return jsonify({'error':'La contraseña nueva no coincide'}),500
+    
+        contraHashed=generate_password_hash(nueva_contra)
+        usuario.contra=contraHashed
+        db.session.commit()
+        return jsonify({'message':'Contraseña cambiada con exito'})
+    except Exception as e:
+        return jsonify({'error':str(e)}),500
+    
+
+
+
