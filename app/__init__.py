@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from .routes import main as main_blueprint
 from flask_mail import Mail
+from flask_cors import CORS
 
 
 db = SQLAlchemy()
@@ -32,6 +33,8 @@ def create_app():
     app.register_blueprint(main_blueprint)
     app.register_blueprint(usuariosBP)
     app.register_blueprint(medidasBP)
+
+    CORS(app)
    # app.register_blueprint(main_blueprint)
     return app
 
