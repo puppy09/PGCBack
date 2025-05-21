@@ -37,7 +37,7 @@ def registrar_usuario():
         msg = Message(
             'Confirmacion de Correo Electronico', recipients=[email]
         )
-        msg.body=f'Bienvenido {nombre}, se ha generado una contraseña para que entres por primera vez al sistema. {contra}. Podras cambiarla una vez ingreses'
+        msg.body=f'Bienvenido {nombre}, se ha generado una contraseña para que entres por primera vez al sistema. {contra} Podras cambiarla una vez ingreses'
         mail.send(msg)
         return jsonify({'message':'Usuario registrado con exito'}), 200
     except Exception as e:
@@ -101,7 +101,36 @@ def cambiar_contra(usuario):
         return jsonify({'message':'Contraseña cambiada con exito'})
     except Exception as e:
         return jsonify({'error':str(e)}),500
-    
+
+@usuariosBP.route('/recuperar_contra',methods=['PUT'])
+def recuperar_contra():
+    try:
+        data=request.get_json()
+        email=data.get('email')
+        email_conf = data.get('email_conf')
+
+        
+        if email != email_conf:
+            return jsonify({'error': 'El correo no coincide'}), 500
+
+        usuarioFind = Usuarios.query.filter_by(email=email).first()
+        
+        nueva_contra = generar_contraseña()
+        contraHashed=generate_password_hash(nueva_contra)
+
+        usuarioFind.contra=contraHashed
+        db.session.commit()
+
+        msg = Message(
+            'Confirmacion de Correo Electronico', recipients=[email]
+        )
+        msg.body=f'Hola {usuarioFind.nombre}, se ha generado una nueva contraseña para que entresal sistema. Podras cambiarla una vez ingreses a la plataforma. Tu nueva contraseña es:  {nueva_contra}'
+        mail.send(msg)
+        return jsonify({'message':'Contraseña enviada con exito'}), 200
+
+
+    except Exception as e:
+        return jsonify({'error':str(e)}), 500
 
 
 
