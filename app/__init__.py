@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from .routes import main as main_blueprint
 from flask_mail import Mail
 from flask_cors import CORS
+from tensorflow.keras.models import load_model
+
 
 
 db = SQLAlchemy()
@@ -10,6 +12,11 @@ db = SQLAlchemy()
 mail = Mail()
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
+
+    modelo = load_model('modelo_ann/modelo_entrenado.h5')
+    print("Modelo cargado")
+
+    app.modelo = modelo
     
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db_pgc.sqlite3'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -26,13 +33,16 @@ def create_app():
     mail.init_app(app)
     db.init_app(app)
 
+
     from .routes import main as main_blueprint
     from controllers.usuarios_controller import usuariosBP
     from controllers.medidas_controller import medidasBP
+    from controllers.prediccion_controller import prediccionBP
 
     app.register_blueprint(main_blueprint)
     app.register_blueprint(usuariosBP)
     app.register_blueprint(medidasBP)
+    app.register_blueprint(prediccionBP)
 
     CORS(app)
    # app.register_blueprint(main_blueprint)

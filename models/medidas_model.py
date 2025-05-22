@@ -13,7 +13,7 @@ class Medidas(db.Model):
 #    muslo=db.Column(db.Float,nullable=False)
 #    bicep=db.Column(db.Float,nullable=False)
     
-    def __init__(self, id_usuario, peso,altura,cuello,pecho,abdomen,cadera,muslo,bicep):
+    def __init__(self, id_usuario, peso,altura,pecho,abdomen,cadera):
         self.id_usuario=id_usuario
         self.peso = peso
         self.altura=altura
