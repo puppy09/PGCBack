@@ -46,8 +46,11 @@ def predecir(usuario):
         db.session.add(nueva_prediccion)
         db.session.commit()
 
-        id_pred = nueva_prediccion.id_prediccion
+        resultados = clasificacion(prediccion[0][0], auxGender)
+        print(resultados)
 
+        id_pred = nueva_prediccion.id_prediccion
+       
         rec = Recomendaciones(
             id_prediccion=id_pred,
             recomendaciones='; '.join(resultados['recomendaciones']),
@@ -56,9 +59,6 @@ def predecir(usuario):
         db.session.add(rec)
         db.session.commit()
 
-        resultados = clasificacion(prediccion[0], auxGender)
-
-
         return jsonify({'prediccion':prediccion.tolist(), 'clasificacion':resultados['clasificacion'], 'recomendaciones':resultados['recomendaciones']})
     except Exception as e:
         return jsonify({'error':str(e)}),500
@@ -66,6 +66,8 @@ def predecir(usuario):
 
 def clasificacion(pgc, genero):
     try:
+        print(pgc)
+        print(genero)
         clasificacion = ''
         recomendaciones = []
         if genero == 'M':
