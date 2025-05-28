@@ -3,7 +3,8 @@ from app import db
 class Medidas(db.Model):
     __tablename__ = 'tb_medidas'
 
-    id_usuario=db.Column(db.Integer, primary_key=True)
+    id_medidas=db.Column(db.Integer, primary_key=True, autoincrement = True)
+    id_usuario=db.Column(db.Integer)
     peso=db.Column(db.Float,nullable=False)
     altura=db.Column(db.Float,nullable=False)
 #    cuello=db.Column(db.Float, nullable=False)

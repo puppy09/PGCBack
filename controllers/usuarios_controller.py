@@ -53,7 +53,7 @@ def login():
 
         usuario = Usuarios.query.filter_by(email=email).first()
 
-        if not usuario or not check_password_hash(usuario.contra, contra):
+        if not usuario or not check_password_hash(usuario.contra, contra) or usuario.estatus != 'P':
             return jsonify({'Error':'Credenciales invalidas'}),401
         
         token = jwt.encode({

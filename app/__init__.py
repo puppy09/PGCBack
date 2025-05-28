@@ -39,12 +39,14 @@ def create_app():
     from controllers.medidas_controller import medidasBP
     from controllers.prediccion_controller import prediccionBP
     from controllers.recomendaciones_controller import recomendacionBP
+    from controllers.admin_controller import usuarios_adminBP
 
     app.register_blueprint(main_blueprint)
     app.register_blueprint(usuariosBP)
     app.register_blueprint(medidasBP)
     app.register_blueprint(prediccionBP)
     app.register_blueprint(recomendacionBP)
+    app.register_blueprint(usuarios_adminBP)
 
     CORS(app)
    # app.register_blueprint(main_blueprint)
