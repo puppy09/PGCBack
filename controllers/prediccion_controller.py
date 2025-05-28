@@ -54,7 +54,7 @@ def predecir(usuario):
         rec = Recomendaciones(
             id_prediccion=id_pred,
             recomendaciones='; '.join(resultados['recomendaciones']),
-            clasificacion=resultados['clasificacion']
+            clasificacion=resultados['clasificacion'],id_usuario=usuario.id_usuario
         )
         db.session.add(rec)
         db.session.commit()
