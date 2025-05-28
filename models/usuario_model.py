@@ -9,12 +9,15 @@ class Usuarios(db.Model):
     ap_materno=db.Column(db.String(50),nullable=False)
     email=db.Column(db.String(100), unique=True, nullable=False)
     contra=db.Column(db.String(100),nullable=False)
+    sexo=db.Column(db.String(1))
 
-    def __init__(self, nombre, ap_paterno, ap_materno,email, contra):
+    def __init__(self, nombre, ap_paterno, ap_materno,email, contra, sexo):
         self.nombre = nombre
         self.ap_paterno=ap_paterno
         self.ap_materno=ap_materno
         self.email = email
         self.contra=contra
+        self.sexo=sexo
+
     def __repr__(self):
         return f'TbUsuarios {self.nombre}'

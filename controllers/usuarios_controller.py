@@ -23,6 +23,7 @@ def registrar_usuario():
         email=data['email']
         ap_paterno=data['ap_paterno']
         ap_materno=data['ap_materno']
+        sexo=data['sexo']
         
 
         if Usuarios.query.filter_by(email=email).first():
@@ -30,14 +31,14 @@ def registrar_usuario():
         
         contra = generar_contraseña()
         contraHashed=generate_password_hash(contra)
-        new_usuario = Usuarios(nombre=nombre, ap_paterno=ap_paterno, ap_materno=ap_materno,email=email,contra=contraHashed)
+        new_usuario = Usuarios(nombre=nombre, ap_paterno=ap_paterno, ap_materno=ap_materno,email=email,contra=contraHashed, sexo=sexo)
         db.session.add(new_usuario)
         db.session.commit()
 
         msg = Message(
             'Confirmacion de Correo Electronico', recipients=[email]
         )
-        msg.body=f'Bienvenido {nombre}, se ha generado una contraseña para que entres por primera vez al sistema. {contra} Podras cambiarla una vez ingreses'
+        msg.body=f'Bienvenido {nombre}, se ha generado una contraseña para que entres por primera vez al sistema. Podras cambiarla una vez ingreses. Tu contraseña es:  {contra}'
         mail.send(msg)
         return jsonify({'message':'Usuario registrado con exito'}), 200
     except Exception as e:
