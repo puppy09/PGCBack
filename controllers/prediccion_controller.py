@@ -5,6 +5,7 @@ from app import mail
 from models.usuario_model import Usuarios
 from models.medidas_model import Medidas
 from models.prediccion_model import Prediccion
+from models.recomendaciones_model import Recomendaciones
 import random, string
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
@@ -45,7 +46,18 @@ def predecir(usuario):
         db.session.add(nueva_prediccion)
         db.session.commit()
 
+        id_pred = nueva_prediccion.id_prediccion
+
+        rec = Recomendaciones(
+            id_prediccion=id_pred,
+            recomendaciones='; '.join(resultados['recomendaciones']),
+            clasificacion=resultados['clasificacion']
+        )
+        db.session.add(rec)
+        db.session.commit()
+
         resultados = clasificacion(prediccion[0], auxGender)
+
 
         return jsonify({'prediccion':prediccion.tolist(), 'clasificacion':resultados['clasificacion'], 'recomendaciones':resultados['recomendaciones']})
     except Exception as e:
