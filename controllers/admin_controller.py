@@ -90,7 +90,7 @@ def verPacientes(usuario):
     except Exception as e:
         return jsonify({'error':str(e)}),500
 
-@usuarios_adminBP.route('/ver_paciente',methods=['GET'])
+@usuarios_adminBP.route('/ver_paciente',methods=['POST'])
 @token_requerido
 def ver_paciente(usuario):
     try:
@@ -110,7 +110,7 @@ def ver_paciente(usuario):
 
         paciente_json = {
             'id_usario': pacienteFind.id_usuario,
-            'nombre': pacienteFind.id_usuario,
+            'nombre': pacienteFind.nombre,
             'ap_paterno':pacienteFind.ap_paterno,
             'ap_materno':pacienteFind.ap_materno,
             'email':pacienteFind.email,
