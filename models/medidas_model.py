@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime
 
 class Medidas(db.Model):
     __tablename__ = 'tb_medidas'
@@ -13,6 +14,7 @@ class Medidas(db.Model):
     cadera=db.Column(db.Float, nullable=False)
 #    muslo=db.Column(db.Float,nullable=False)
 #    bicep=db.Column(db.Float,nullable=False)
+    fecha = db.Column(db.DateTime, default = datetime.now)
     
     def __init__(self, id_usuario, peso,altura,pecho,abdomen,cadera):
         self.id_usuario=id_usuario
