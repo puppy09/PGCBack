@@ -66,8 +66,6 @@ def predecir(usuario):
 
 def clasificacion(pgc, genero):
     try:
-        print(pgc)
-        print(genero)
         clasificacion = ''
         recomendaciones = []
         if genero == 'M':

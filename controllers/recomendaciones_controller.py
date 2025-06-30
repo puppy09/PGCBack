@@ -18,7 +18,7 @@ recomendacionBP = Blueprint('recomendacion',__name__)
 @token_requerido
 def ver_reco(usuario):
     try:
-        all_reco = Recomendaciones.query.filter_by(id_usuario=usuario.id_usuario).all()
+        all_reco = Recomendaciones.query.filter_by(id_usuario=usuario.id_usuario).order_by(Recomendaciones.fecha.desc())
 
         resultados = []
         for reco in all_reco:
