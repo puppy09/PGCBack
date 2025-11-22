@@ -12,5 +12,6 @@ class Prediccion(db.Model):
     def __init__(self, id_usuario, prediccion):
         self.id_usuario=id_usuario
         self.prediccion = prediccion
+        #coment
     def __repr__(self):
         return f'tbPrediccion {self.prediccion}'
