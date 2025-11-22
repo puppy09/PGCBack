@@ -24,14 +24,14 @@ def registrar_usuario():
         ap_paterno=data['ap_paterno']
         ap_materno=data['ap_materno']
         sexo=data['sexo']
-        
+        estatus=data['estatus']
 
         if Usuarios.query.filter_by(email=email).first():
             return jsonify({'error':'El correo ya esta registrado'}),400
         
         contra = generar_contraseña()
         contraHashed=generate_password_hash(contra)
-        new_usuario = Usuarios(nombre=nombre, ap_paterno=ap_paterno, ap_materno=ap_materno,email=email,contra=contraHashed, sexo=sexo)
+        new_usuario = Usuarios(nombre=nombre, ap_paterno=ap_paterno, ap_materno=ap_materno,email=email,contra=contraHashed, sexo=sexo, estatus=estatus)
         db.session.add(new_usuario)
         db.session.commit()
 

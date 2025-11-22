@@ -11,6 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from middlewares.menu import token_requerido
 import numpy as np
+import pickle
 
 prediccionBP = Blueprint('prediccion',__name__)
 
@@ -19,19 +20,35 @@ prediccionBP = Blueprint('prediccion',__name__)
 def predecir(usuario):
     try:
         data=request.get_json()
+
         altura=data.get('altura')
         peso=data.get('peso')
         pecho=data.get('pecho')
         abdomen=data.get('abdomen')
         cadera=data.get('cadera')
 
-        required_fields = ['abdomen','altura','peso','pecho','cadera']
-        features = [float(data[field]) for field in required_fields]
+        sexo=usuario.sexo
+        if sexo == 'F':
+            sexo_numerico = 1
+        else:
+            sexo_numerico = 0
+        print(sexo)
+
+        required_fields = ['peso','altura','abdomen','cadera', 'pecho']
+        BMI=float(peso)/((float(altura))**2)
+        WaistHeight=float(abdomen)/(float(altura)*100)
+        
+
+        features = [sexo_numerico, float(peso), float(altura), float(abdomen), float(cadera), float(pecho), BMI, WaistHeight]
 
         input_array = np.array([features])
 
+        scaler = current_app.scaler
+        input_scaled = scaler.transform(input_array)
+
+
         modelo = current_app.modelo
-        prediccion = modelo.predict(input_array)
+        prediccion = modelo.predict(input_scaled)
         
         id_usuario=usuario.id_usuario
         usuariofind=Usuarios.query.get(id_usuario)

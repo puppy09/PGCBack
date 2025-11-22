@@ -4,6 +4,7 @@ from .routes import main as main_blueprint
 from flask_mail import Mail
 from flask_cors import CORS
 from tensorflow.keras.models import load_model
+import pickle
 
 
 
@@ -13,10 +14,14 @@ mail = Mail()
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
 
-    modelo = load_model('modelo_ann/modelo_entrenado.h5')
+    modelo = load_model('modelo_ann/modelo_entrenado.h5', compile=False)
     print("Modelo cargado")
-
     app.modelo = modelo
+
+    with open('modelo_ann/scaler.pkl','rb') as f:
+        scaler = pickle.load(f)
+    print("Scaler cargado")
+    app.scaler = scaler
     
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db_pgc.sqlite3'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
