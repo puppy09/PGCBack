@@ -10,5 +10,10 @@ with app.app_context():
     print("Tablas",tables)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    # Configuración SSL con certificados de Let's Encrypt
+    ssl_context = (
+        '/etc/letsencrypt/live/proyectomedico.xyz/fullchain.pem',
+        '/etc/letsencrypt/live/proyectomedico.xyz/privkey.pem'
+    )
+    app.run(host='0.0.0.0', port=5000, debug=False, ssl_context=ssl_context)
 
