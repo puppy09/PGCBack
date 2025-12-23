@@ -56,7 +56,12 @@ def create_app():
     # Configurar CORS: en producción solo permite el dominio específico
     import os
     if os.environ.get('FLASK_ENV') == 'production' or not app.debug:
-        CORS(app, resources={r"/*": {"origins": ["https://proyectomedico.xyz"]}})
+        CORS(app, resources={r"/*": {
+            "origins": ["https://proyectomedico.xyz"],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True
+        }})
     else:
         CORS(app)  # En desarrollo permite todos los orígenes
    # app.register_blueprint(main_blueprint)
