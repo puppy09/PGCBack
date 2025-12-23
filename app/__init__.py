@@ -57,7 +57,7 @@ def create_app():
     import os
     if os.environ.get('FLASK_ENV') == 'production' or not app.debug:
         CORS(app, resources={r"/*": {
-            "origins": ["https://proyectomedico.xyz", "https://proyectomedico.xyz:5000", "http://proyectomedico.xyz"],
+            "origins": ["https://proyectomedico.xyz", "https://proyectomedico.xyz:5000"],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization", "authorization"],
             "supports_credentials": True,
