@@ -53,7 +53,12 @@ def create_app():
     app.register_blueprint(recomendacionBP)
     app.register_blueprint(usuarios_adminBP)
 
-    CORS(app)
+    # Configurar CORS: en producción solo permite el dominio específico
+    import os
+    if os.environ.get('FLASK_ENV') == 'production' or not app.debug:
+        CORS(app, resources={r"/*": {"origins": ["https://proyectomedico.xyz"]}})
+    else:
+        CORS(app)  # En desarrollo permite todos los orígenes
    # app.register_blueprint(main_blueprint)
     return app
 
